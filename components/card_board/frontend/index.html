@@ -26,7 +26,7 @@
       width: min(96vw, 1360px);
       aspect-ratio: 4 / 3;
       margin: 0 auto;
-      background-image: url("/app/static/background/back.png");
+      background-image: url("https://raw.githubusercontent.com/xwl-lucy/bluff-game-clean/main/static/background/back.png");
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
@@ -115,7 +115,7 @@
       width: 68px;
       aspect-ratio: 0.70;
       border-radius: 7px;
-      background-image: url("/app/static/poker/pokerback.png");
+      background-image: url("https://raw.githubusercontent.com/xwl-lucy/bluff-game-clean/main/static/poker/pokerback.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -189,7 +189,7 @@
       width: 72px;
       height: 102px;
       border-radius: 9px;
-      background-image: url("/app/static/poker/pokerback.png");
+      background-image: url("https://raw.githubusercontent.com/xwl-lucy/bluff-game-clean/main/static/poker/pokerback.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -326,84 +326,58 @@
       appearance: none;
       border: none;
       outline: none;
-      padding: 0;
-      background-color: transparent;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 100% 100%;
       cursor: pointer;
       transition: transform 0.12s ease, filter 0.12s ease, opacity 0.12s ease;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .action-row .game-btn {
       flex: 0 0 auto;
       width: clamp(135px, 12.5vw, 172px);
-      aspect-ratio: 4.45 / 1;
-      height: auto;
+      height: clamp(40px, 3.8vw, 52px);
+      border-radius: 14px;
+      color: #fff8df;
+      font-size: clamp(15px, 1.35vw, 18px);
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 2px rgba(0,0,0,0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.22),
+        0 5px 12px rgba(0,0,0,0.20);
     }
 
-    .game-btn:not([data-action="restart"]) span {
-      opacity: 0;
+    .game-btn.primary {
+      border: 3px solid #d59b40;
+      background:
+        linear-gradient(180deg, #ff7159 0%, #e44332 52%, #c92b20 100%);
+    }
+
+    .game-btn.secondary {
+      border: 3px solid #c59237;
+      background:
+        linear-gradient(180deg, #152748 0%, #0f1f3d 55%, #0c1730 100%);
+    }
+
+    .game-btn span {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: none;
     }
 
     .game-btn:hover:not(:disabled) {
       transform: translateY(-2px);
-      filter: brightness(1.04);
+      filter: brightness(1.05);
     }
 
     .game-btn:active:not(:disabled) {
       transform: translateY(1px);
     }
 
-    .game-btn[data-action="play"] {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/play_default.png");
-    }
-
-    .game-btn[data-action="play"]:hover:not(:disabled) {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/play_hover.png");
-    }
-
-    .game-btn[data-action="play"]:active:not(:disabled) {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/play_pressed.png");
-    }
-
-    .game-btn[data-action="play"]:disabled {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/play_disabled.png");
+    .game-btn:disabled {
       cursor: not-allowed;
-    }
-
-    .game-btn[data-action="challenge"] {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/challenge_default.png");
-    }
-
-    .game-btn[data-action="challenge"]:hover:not(:disabled) {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/challenge_hover.png");
-    }
-
-    .game-btn[data-action="challenge"]:active:not(:disabled) {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/challenge_pressed.png");
-    }
-
-    .game-btn[data-action="challenge"]:disabled {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/challenge_disabled.png");
-      cursor: not-allowed;
-    }
-
-    .game-btn[data-action="pass"] {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/skip_default.png");
-    }
-
-    .game-btn[data-action="pass"]:hover:not(:disabled) {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/skip_hover.png");
-    }
-
-    .game-btn[data-action="pass"]:active:not(:disabled) {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/skip_pressed.png");
-    }
-
-    .game-btn[data-action="pass"]:disabled {
-      background-image: url("/app/static/button_assets_1200dpi/section2_medium/skip_disabled.png");
-      cursor: not-allowed;
+      opacity: 0.45;
+      filter: grayscale(0.25);
     }
 
     .restart-zone {
@@ -419,17 +393,10 @@
     .game-btn[data-action="restart"] {
       width: 100%;
       height: 44px;
-      border: 3px solid #c59237;
       border-radius: 16px;
-      background:
-        linear-gradient(180deg, #152748 0%, #0f1f3d 55%, #0c1730 100%);
       color: #f9efd6;
       font-size: 16px;
       font-weight: 900;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.35);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.18),
-        0 5px 12px rgba(0,0,0,0.22);
     }
 
     .btn-icon {
@@ -533,6 +500,7 @@
   <div id="root"></div>
 
   <script>
+    const RAW_STATIC_BASE = "https://raw.githubusercontent.com/xwl-lucy/bluff-game-clean/main/static";
     const MIN_FRAME_HEIGHT = 760;
     const EXTRA_FRAME_PADDING = 24;
     const AI_DELAY_MS = 1000;
@@ -754,7 +722,10 @@
         (r) => `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`
       ).join("");
 
-      const playText = firstRound ? "叫牌并出牌" : "打出选中的牌";
+      const playText = firstRound ? "✅ 叫牌并出牌" : "✅ 打出选中的牌";
+      const challengeText = "⚠️ 发起质疑";
+      const passText = "➡️ 本轮过牌";
+
       const challengeDisabled = (!humanTurn || firstRound) ? "disabled" : "";
       const passDisabled = (!humanTurn || firstRound) ? "disabled" : "";
       const playDisabled = (!humanTurn) ? "disabled" : "";
@@ -772,26 +743,22 @@
         <div class="action-zone">
           <div class="action-row">
             <button class="game-btn primary" data-action="play" ${playDisabled}>
-              <span class="btn-icon">✅</span>
               <span>${playText}</span>
             </button>
 
             <button class="game-btn secondary" data-action="challenge" ${challengeDisabled}>
-              <span class="btn-icon">⚠️</span>
-              <span>发起质疑</span>
+              <span>${challengeText}</span>
             </button>
 
             <button class="game-btn secondary" data-action="pass" ${passDisabled}>
-              <span class="btn-icon">➡️</span>
-              <span>本轮过牌</span>
+              <span>${passText}</span>
             </button>
           </div>
         </div>
 
         <div class="restart-zone">
           <button class="game-btn secondary" data-action="restart">
-            <span class="btn-icon">🔄</span>
-            <span>重新开局</span>
+            <span>🔄 重新开局</span>
           </button>
         </div>
       `;
@@ -845,7 +812,10 @@
           const idx = Number(card.index);
           html += `
             <div class="my-card" data-card-index="${idx}">
-              <img src="${card.img}" />
+              <img
+                src="${card.img}"
+                onerror="this.onerror=null;this.src='${RAW_STATIC_BASE}/poker/pokerback.png';"
+              />
             </div>
           `;
         }
