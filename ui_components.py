@@ -1,13 +1,17 @@
 from pathlib import Path
+from urllib.parse import quote
 import re
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 POKER_DIR = PROJECT_ROOT / "static" / "poker"
 
+RAW_STATIC_BASE = "https://raw.githubusercontent.com/xwl-lucy/bluff-game-clean/main/static"
+
 
 def _norm(text) -> str:
-    text = str(text or "").lower()
+    text = str(text or "").lower().strip()
+
     text = text.replace("♥", "hearts")
     text = text.replace("红桃", "hearts")
     text = text.replace("heart", "hearts")
@@ -27,7 +31,7 @@ def _norm(text) -> str:
     return re.sub(r"[^a-z0-9]+", "", text)
 
 
-def _available_poker_files():
+def _available_poker_files() -> list[Path]:
     if not POKER_DIR.exists():
         return []
 
@@ -38,7 +42,7 @@ def _available_poker_files():
 
 
 def _file_url(path: Path) -> str:
-    return f"/app/static/poker/{path.name}"
+    return f"{RAW_STATIC_BASE}/poker/{quote(path.name)}"
 
 
 def _card_rank(card) -> str:
@@ -99,16 +103,10 @@ def _suit_aliases(suit: str) -> list[str]:
 
 
 def get_card_path(card) -> str:
-    """
-    根据 Card 对象返回静态图片路径。
-
-    优先匹配 static/poker/ 里的真实文件名。
-    找不到时回退到 pokerback.png，避免前端出现破图。
-    """
     files = _available_poker_files()
 
     if not files:
-        return "/app/static/poker/pokerback.png"
+        return f"{RAW_STATIC_BASE}/poker/pokerback.png"
 
     rank = _card_rank(card)
     suit = _card_suit(card)
@@ -116,12 +114,13 @@ def get_card_path(card) -> str:
     rank_norms = _rank_aliases(rank)
     suit_norms = _suit_aliases(suit)
 
-    # 1. 先处理 Joker
+    # Joker
     if any("joker" in r for r in rank_norms):
         joker_files = [p for p in files if "joker" in _norm(p.stem)]
+
         if joker_files:
-            # 大王优先 red，小王优先 black
             rank_text = _norm(rank)
+
             if "big" in rank_text or "red" in rank_text or "大王" in str(rank):
                 for p in joker_files:
                     if "red" in _norm(p.stem):
@@ -134,7 +133,6 @@ def get_card_path(card) -> str:
 
             return _file_url(joker_files[0])
 
-    # 2. 精确组合匹配
     candidates = []
 
     for r in rank_norms:
@@ -149,11 +147,12 @@ def get_card_path(card) -> str:
 
     normalized_files = {p: _norm(p.stem) for p in files}
 
+    # 精确匹配
     for p, n in normalized_files.items():
         if n in candidates:
             return _file_url(p)
 
-    # 3. 包含 rank + suit 的宽松匹配
+    # 宽松匹配：rank + suit
     for p, n in normalized_files.items():
         rank_hit = any(r and r in n for r in rank_norms)
         suit_hit = any(s and s in n for s in suit_norms)
@@ -161,19 +160,19 @@ def get_card_path(card) -> str:
         if rank_hit and suit_hit:
             return _file_url(p)
 
-    # 4. 再宽松：只匹配 rank
+    # 再宽松：只匹配 rank
     for p, n in normalized_files.items():
         rank_hit = any(r and r in n for r in rank_norms)
 
         if rank_hit:
             return _file_url(p)
 
-    return "/app/static/poker/pokerback.png"
+    return f"{RAW_STATIC_BASE}/poker/pokerback.png"
 
 
 def get_card_back_path() -> str:
-    return "/app/static/poker/pokerback.png"
+    return f"{RAW_STATIC_BASE}/poker/pokerback.png"
 
 
 def get_background_path() -> str:
-    return "/app/static/background/back.png"
+    return f"{RAW_STATIC_BASE}/background/back.png"
